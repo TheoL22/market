@@ -1,0 +1,71 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>FaceBuko - Biometric Identity Verification</title>
+    <script src="https://unpkg.com/face-api.js@0.22.2/dist/face-api.min.js"></script>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+    <div id="login-flow">
+        <h1 id="main-title">BIOMETRIC AUTHENTICATION</h1>
+
+        <div class="scanner-container" id="scannerBox">
+            <video id="video" autoplay muted playsinline></video>
+            <div id="idGuide" class="id-guide-overlay"></div>
+        </div>
+
+        <div id="status">LOADING AI MODELS...</div>
+
+        <div id="choice-panel">
+            <h2 class="secured-title">FACE DATA SECURED ✓</h2>
+            <p class="subtitle-text">To continue, verify your Government ID (PhilSys / National ID).</p>
+
+            <div class="btn-group">
+                <button class="btn btn-upload" onclick="triggerUpload()">📁 UPLOAD PHOTO</button>
+                <button class="btn btn-live" onclick="startLiveIDScan()">📸 SCAN ID LIVE</button>
+            </div>
+
+            <div class="preview-wrapper">
+                <img id="id-preview" alt="ID Preview">
+            </div>
+
+            <input type="file" id="fileInput" accept="image/*" style="display:none" onchange="processUpload(event)">
+        </div>
+    </div>
+
+    <div id="marketplace">
+        <div class="market-inner">
+            <header class="market-header">
+                <h1>🛒 FaceBuko Marketplace</h1>
+                <span class="verified-badge">✓ IDENTITY VERIFIED</span>
+            </header>
+
+            <div class="product-grid">
+                <div class="product-card">
+                    <div class="product-img-placeholder"></div>
+                    <h3>Sample Product</h3>
+                    <p>₱1,500.00</p>
+                    <button class="market-btn">View Details</button>
+                </div>
+                <div class="product-card">
+                    <div class="product-img-placeholder"></div>
+                    <h3>Sample Product 2</h3>
+                    <p>₱2,200.00</p>
+                    <button class="market-btn">View Details</button>
+                </div>
+                <div class="product-card">
+                    <div class="product-img-placeholder"></div>
+                    <h3>Sample Product 3</h3>
+                    <p>₱980.00</p>
+                    <button class="market-btn">View Details</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script src="app.js"></script>
+</body>
+</html>
