@@ -1,0 +1,105 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>FaceBuko - Identity Binding</title>
+    <script src="https://unpkg.com/face-api.js@0.22.2/dist/face-api.min.js"></script>
+    <link rel="stylesheet" href="style.css">
+    <style>
+        /* Eto yung "Box" Guide para sa ID Scan */
+        .scanner-container {
+            position: relative;
+            display: inline-block;
+            border-radius: 15px;
+            overflow: hidden;
+            border: 3px solid #333;
+        }
+
+        /* Overlay box for ID alignment */
+        .id-guide-overlay {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            width: 80%; /* Width of the ID card guide */
+            height: 55%; /* Height of the ID card guide */
+            border: 3px dashed #00ff88;
+            border-radius: 12px;
+            box-shadow: 0 0 0 9999px rgba(0, 0, 0, 0.5); /* Dim background outside the box */
+            pointer-events: none;
+            display: none; /* Only shows during ID scan */
+        }
+
+        #video {
+            width: 100%;
+            max-width: 500px;
+            display: block;
+        }
+    </style>
+</head>
+<body>
+
+    <audio id="beepSound" src="https://assets.mixkit.co/active_storage/sfx/2869/2869-preview.mp3" preload="auto"></audio>
+
+    <div id="login-flow">
+        <h1 id="main-title">BIOMETRIC AUTHENTICATION</h1>
+        
+        <div class="scanner-container" id="scannerBox">
+            <video id="video" autoplay muted playsinline></video>
+            <div id="idGuide" class="id-guide-overlay"></div>
+        </div>
+
+        <div id="status" style="margin:20px 0; font-weight:bold; color: #00d2ff; font-size: 1.2rem;">LOADING AI MODELS...</div>
+
+        <div id="choice-panel" style="display: none;">
+            <h2 style="color: #00ff88">FACE DATA SECURED ✓</h2>
+            <p style="color: white; margin-bottom: 20px;">To continue, please verify your Government ID (PhilSys/National ID).</p>
+            <div class="btn-group">
+                <button class="btn btn-upload" onclick="triggerUpload()" style="padding: 15px; cursor: pointer;">📁 UPLOAD PHOTO</button>
+                <button class="btn btn-live" onclick="startLiveIDScan()" style="padding: 15px; cursor: pointer;">📸 SCAN ID LIVE</button>
+            </div>
+            
+            <div style="margin-top: 20px;">
+                <img id="id-preview" style="width:250px; border-radius: 10px; display:none; border: 3px solid #00ff88; box-shadow: 0 0 15px rgba(0,255,136,0.3);">
+            </div>
+            
+            <input type="file" id="fileInput" accept="image/*" style="display:none" onchange="processUpload(event)">
+        </div>
+    </div>
+
+    <div id="marketplace" style="display: none;">
+        <div style="padding:40px; color: #333; background: #f4f4f4; min-height: 100vh;">
+            <header style="border-bottom: 2px solid #ddd; margin-bottom: 20px; display: flex; justify-content: space-between; align-items: center;">
+                <h1>🛒 FaceBuko Marketplace</h1>
+                <span style="background: #00ff88; padding: 5px 15px; border-radius: 20px; font-weight: bold; font-size: 0.8rem;">✓ IDENTITY VERIFIED</span>
+            </header>
+            
+            <div style="display: grid; grid-template-columns: repeat(auto-fill, minmax(200px, 1fr)); gap: 20px;">
+                <div style="background: white; padding: 15px; border-radius: 10px; box-shadow: 0 4px 6px rgba(0,0,0,0.1);">
+                    <div style="height: 150px; background: #eee; border-radius: 5px; margin-bottom: 10px;"></div>
+                    <h3>Sample Product</h3>
+                    <p>₱1,500.00</p>
+                    <button style="width: 100%; background: #1877f2; color: white; border: none; padding: 10px; border-radius: 5px;">View Details</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script src="app.js"></script>
+    
+    <script>
+        // Idagdag natin ito para lumitaw ang box guide pag nag-Live Scan
+        const originalLiveScan = window.startLiveIDScan;
+        window.startLiveIDScan = function() {
+            document.getElementById('idGuide').style.display = 'block'; // Show guide
+            if(typeof originalLiveScan === "function") originalLiveScan();
+        };
+
+        // Itago ang box guide pag tapos na
+        function hideGuide() {
+            document.getElementById('idGuide').style.display = 'none';
+        }
+    </script>
+</body>
+</html>
